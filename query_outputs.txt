@@ -1,0 +1,271 @@
+QUERY OUTPUTS - Basic SQL SELECT (Chinook dataset)
+============================================================
+
+Q1: Select specific columns
+View name, country and email of all customers (SELECT with chosen columns).
+
+SELECT customerid, firstname, lastname, country, email
+FROM customer;
+
+customerid | firstname | lastname    | country        | email                        
+-----------+-----------+-------------+----------------+------------------------------
+1          | Luís      | Gonçalves   | Brazil         | luisg@embraer.com.br         
+2          | Leonie    | Köhler      | Germany        | leonekohler@surfeu.de        
+3          | François  | Tremblay    | Canada         | ftremblay@gmail.com          
+4          | Bjørn     | Hansen      | Norway         | bjorn.hansen@yahoo.no        
+5          | František | Wichterlová | Czech Republic | frantisekw@jetbrains.com     
+6          | Helena    | Holý        | Czech Republic | hholy@gmail.com              
+7          | Astrid    | Gruber      | Austria        | astrid.gruber@apple.at       
+8          | Daan      | Peeters     | Belgium        | daan_peeters@apple.be        
+9          | Kara      | Nielsen     | Denmark        | kara.nielsen@jubii.dk        
+10         | Eduardo   | Martins     | Brazil         | eduardo@woodstock.com.br     
+11         | Alexandre | Rocha       | Brazil         | alero@uol.com.br             
+12         | Roberto   | Almeida     | Brazil         | roberto.almeida@riotur.gov.br
+13         | Fernanda  | Ramos       | Brazil         | fernadaramos4@uol.com.br     
+14         | Mark      | Philips     | Canada         | mphilips12@shaw.ca           
+15         | Jennifer  | Peterson    | Canada         | jenniferp@rogers.ca          
+
+(59 rows)  (showing first 15 of 59 rows)
+
+------------------------------------------------------------
+
+Q2: Unique values with DISTINCT + ORDER BY
+List every country where customers live, sorted A to Z.
+
+SELECT DISTINCT country
+FROM customer
+ORDER BY country;
+
+country       
+--------------
+Argentina     
+Australia     
+Austria       
+Belgium       
+Brazil        
+Canada        
+Chile         
+Czech Republic
+Denmark       
+Finland       
+France        
+Germany       
+Hungary       
+India         
+Ireland       
+
+(24 rows)  (showing first 15 of 24 rows)
+
+------------------------------------------------------------
+
+Q3: Simple WHERE filter
+Find all customers who live in Brazil.
+
+SELECT customerid, firstname, lastname, city, email
+FROM customer
+WHERE country = 'Brazil';
+
+customerid | firstname | lastname  | city                | email                        
+-----------+-----------+-----------+---------------------+------------------------------
+1          | Luís      | Gonçalves | São José dos Campos | luisg@embraer.com.br         
+10         | Eduardo   | Martins   | São Paulo           | eduardo@woodstock.com.br     
+11         | Alexandre | Rocha     | São Paulo           | alero@uol.com.br             
+12         | Roberto   | Almeida   | Rio de Janeiro      | roberto.almeida@riotur.gov.br
+13         | Fernanda  | Ramos     | Brasília            | fernadaramos4@uol.com.br     
+
+(5 rows)
+
+------------------------------------------------------------
+
+Q4: WHERE with IN + multi-column ORDER BY
+Customers from Canada, France or Germany, sorted by country and then last name.
+
+SELECT firstname, lastname, city, country
+FROM customer
+WHERE country IN ('Canada', 'France', 'Germany')
+ORDER BY country, lastname;
+
+firstname | lastname  | city        | country
+----------+-----------+-------------+--------
+Robert    | Brown     | Toronto     | Canada 
+Edward    | Francis   | Ottawa      | Canada 
+Aaron     | Mitchell  | Winnipeg    | Canada 
+Jennifer  | Peterson  | Vancouver   | Canada 
+Mark      | Philips   | Edmonton    | Canada 
+Martha    | Silk      | Halifax     | Canada 
+Ellie     | Sullivan  | Yellowknife | Canada 
+François  | Tremblay  | Montréal    | Canada 
+Camille   | Bernard   | Paris       | France 
+Marc      | Dubois    | Lyon        | France 
+Wyatt     | Girard    | Bordeaux    | France 
+Dominique | Lefebvre  | Paris       | France 
+Isabelle  | Mercier   | Dijon       | France 
+Leonie    | Köhler    | Stuttgart   | Germany
+Hannah    | Schneider | Berlin      | Germany
+
+(17 rows)  (showing first 15 of 17 rows)
+
+------------------------------------------------------------
+
+Q5: IS NOT NULL
+Customers who have a company name recorded, sorted by company.
+
+SELECT firstname, lastname, company, country
+FROM customer
+WHERE company IS NOT NULL
+ORDER BY company;
+
+firstname | lastname    | company                                          | country       
+----------+-------------+--------------------------------------------------+---------------
+Tim       | Goyer       | Apple Inc.                                       | USA           
+Alexandre | Rocha       | Banco do Brasil S.A.                             | Brazil        
+Luís      | Gonçalves   | Embraer - Empresa Brasileira de Aeronáutica S.A. | Brazil        
+Frank     | Harris      | Google Inc.                                      | USA           
+František | Wichterlová | JetBrains s.r.o.                                 | Czech Republic
+Jack      | Smith       | Microsoft Corporation                            | USA           
+Roberto   | Almeida     | Riotur                                           | Brazil        
+Jennifer  | Peterson    | Rogers Canada                                    | Canada        
+Mark      | Philips     | Telus                                            | Canada        
+Eduardo   | Martins     | Woodstock Discos                                 | Brazil        
+
+(10 rows)
+
+------------------------------------------------------------
+
+Q6: Pattern search with LIKE
+Tracks whose name contains the word 'love' (case-insensitive using LOWER).
+
+SELECT trackid, name, composer, unitprice
+FROM track
+WHERE LOWER(name) LIKE '%love%'
+ORDER BY trackid;
+
+trackid | name                                         | composer                                                         | unitprice
+--------+----------------------------------------------+------------------------------------------------------------------+----------
+24      | Love In An Elevator                          | Steven Tyler, Joe Perry                                          | 0.99     
+56      | Love, Hate, Love                             | Jerry Cantrell, Layne Staley                                     | 0.99     
+195     | Let Me Love You Baby                         | Willie Dixon                                                     | 0.99     
+335     | My Love                                      | Jauperi/Zeu Góes                                                 | 0.99     
+341     | The Girl I Love She Got Long Black Wavy Hair | Jimmy Page/John Bonham/John Estes/John Paul Jones/Robert Plant   | 0.99     
+345     | Whole Lotta Love                             | Jimmy Page/John Bonham/John Paul Jones/Robert Plant/Willie Dixon | 0.99     
+413     | Loverman                                     | Cave                                                             | 0.99     
+440     | Love Gun                                     | Paul Stanley                                                     | 0.99     
+444     | Do You Love Me                               | Paul Stanley, B. Ezrin, K. Fowley                                | 0.99     
+449     | Calling Dr. Love                             | Gene Simmons                                                     | 0.99     
+493     | Love Is Blind                                | David Coverdale/Earl Slick                                       | 0.99     
+495     | Cry For Love                                 | Bossi/David Coverdale/Earl Slick                                 | 0.99     
+496     | Living On Love                               | Bossi/David Coverdale/Earl Slick                                 | 0.99     
+571     | Love Of My Life                              | Carlos Santana & Dave Matthews                                   | 0.99     
+589     | Um Love                                      | NULL                                                             | 0.99     
+
+(114 rows)  (showing first 15 of 114 rows)
+
+------------------------------------------------------------
+
+Q7: WHERE + ORDER BY DESC + LIMIT
+Top 10 longest tracks (longer than 5 minutes), duration shown in minutes.
+
+SELECT name, ROUND(milliseconds / 60000.0, 2) AS minutes
+FROM track
+WHERE milliseconds > 300000
+ORDER BY milliseconds DESC
+LIMIT 10;
+
+name                        | minutes
+----------------------------+--------
+Occupation / Precipice      | 88.12  
+Through a Looking Glass     | 84.81  
+Greetings from Earth, Pt. 1 | 49.34  
+The Man With Nine Lives     | 49.28  
+Battlestar Galactica, Pt. 2 | 49.27  
+Battlestar Galactica, Pt. 1 | 49.21  
+Murder On the Rising Star   | 48.93  
+Battlestar Galactica, Pt. 3 | 48.8   
+Take the Celestra           | 48.79  
+Fire In Space               | 48.78  
+
+(10 rows)
+
+------------------------------------------------------------
+
+Q8: BETWEEN + ORDER BY
+Invoices with total between 10 and 15, highest total first.
+
+SELECT invoiceid, customerid, invoicedate, billingcountry, total
+FROM invoice
+WHERE total BETWEEN 10 AND 15
+ORDER BY total DESC, invoiceid;
+
+invoiceid | customerid | invoicedate         | billingcountry | total
+----------+------------+---------------------+----------------+------
+193       | 37         | 2011-04-23 00:00:00 | Germany        | 14.91
+5         | 23         | 2009-01-11 00:00:00 | USA            | 13.86
+12        | 2          | 2009-02-11 00:00:00 | Germany        | 13.86
+19        | 40         | 2009-03-14 00:00:00 | France         | 13.86
+26        | 19         | 2009-04-14 00:00:00 | USA            | 13.86
+33        | 57         | 2009-05-15 00:00:00 | Chile          | 13.86
+40        | 36         | 2009-06-15 00:00:00 | Germany        | 13.86
+47        | 15         | 2009-07-16 00:00:00 | Canada         | 13.86
+54        | 53         | 2009-08-16 00:00:00 | United Kingdom | 13.86
+61        | 32         | 2009-09-16 00:00:00 | Canada         | 13.86
+68        | 11         | 2009-10-17 00:00:00 | Brazil         | 13.86
+75        | 49         | 2009-11-17 00:00:00 | Poland         | 13.86
+82        | 28         | 2009-12-18 00:00:00 | USA            | 13.86
+110       | 3          | 2010-04-21 00:00:00 | Canada         | 13.86
+117       | 41         | 2010-05-22 00:00:00 | France         | 13.86
+
+(53 rows)  (showing first 15 of 53 rows)
+
+------------------------------------------------------------
+
+Q9: Multiple conditions with AND (date range)
+USA invoices billed during the year 2010, latest first.
+
+SELECT invoiceid, customerid, invoicedate, billingcity, total
+FROM invoice
+WHERE billingcountry = 'USA'
+  AND invoicedate >= '2010-01-01'
+  AND invoicedate <  '2011-01-01'
+ORDER BY invoicedate DESC;
+
+invoiceid | customerid | invoicedate         | billingcity    | total
+----------+------------+---------------------+----------------+------
+158       | 24         | 2010-11-19 00:00:00 | Chicago        | 8.91 
+157       | 18         | 2010-11-16 00:00:00 | New York       | 5.94 
+145       | 16         | 2010-09-23 00:00:00 | Mountain View  | 13.86
+137       | 28         | 2010-08-18 00:00:00 | Salt Lake City | 8.91 
+136       | 22         | 2010-08-15 00:00:00 | Orlando        | 5.94 
+135       | 18         | 2010-08-14 00:00:00 | New York       | 3.96 
+134       | 16         | 2010-08-13 00:00:00 | Mountain View  | 1.98 
+124       | 20         | 2010-06-22 00:00:00 | Mountain View  | 13.86
+115       | 26         | 2010-05-14 00:00:00 | Fort Worth     | 5.94 
+114       | 22         | 2010-05-13 00:00:00 | Orlando        | 3.96 
+112       | 18         | 2010-05-12 00:00:00 | New York       | 1.98 
+113       | 20         | 2010-05-12 00:00:00 | Mountain View  | 1.98 
+111       | 17         | 2010-04-29 00:00:00 | Redmond        | 0.99 
+103       | 24         | 2010-03-21 00:00:00 | Chicago        | 15.86
+93        | 26         | 2010-02-09 00:00:00 | Fort Worth     | 3.96 
+
+(18 rows)  (showing first 15 of 18 rows)
+
+------------------------------------------------------------
+
+Q10: WHERE + LIKE + ORDER BY on dates
+Sales-related employees ordered by hire date (oldest first).
+
+SELECT employeeid, firstname, lastname, title, hiredate
+FROM employee
+WHERE title LIKE 'Sales%'
+ORDER BY hiredate;
+
+employeeid | firstname | lastname | title               | hiredate           
+-----------+-----------+----------+---------------------+--------------------
+3          | Jane      | Peacock  | Sales Support Agent | 2002-04-01 00:00:00
+2          | Nancy     | Edwards  | Sales Manager       | 2002-05-01 00:00:00
+4          | Margaret  | Park     | Sales Support Agent | 2003-05-03 00:00:00
+5          | Steve     | Johnson  | Sales Support Agent | 2003-10-17 00:00:00
+
+(4 rows)
+
+------------------------------------------------------------
+
